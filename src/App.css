@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.active-job {
+  background-color: #4a994e;
+}
+
+.jobs {
+  height: 80vh;
+  overflow-y: scroll;
+  position: sticky;
+  top: 5%;
+}
