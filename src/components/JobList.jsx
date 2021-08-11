@@ -13,7 +13,9 @@ const JobList = ({ job, selectedJob, changeJob }) => {
           <Card.Title>{job.title}</Card.Title>
           <Card.Body>{job.company_name}</Card.Body>
           <Card.Text>{job.salary}</Card.Text>
-          <Button href={job.url}>Apply</Button>
+          <Button href={job.url} target="_blank">
+            Apply
+          </Button>
         </Card>
       </Container>
     </>

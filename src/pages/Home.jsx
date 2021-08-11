@@ -3,16 +3,25 @@ import JobList from "../components/JobList";
 import JobDescription from "../components/JobDescription";
 import { useState } from "react";
 
-const Home = () => {
-  const [jobs, setJobs] = useState({});
+import { connect } from "react-redux";
+import { getJobsAction } from "../redux/actions";
+
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = (dispatch) => ({
+  getJobs: (jobs) => dispatch(getJobsAction(jobs)),
+});
+
+const Home = (props) => {
+  // const [jobs, setJobs] = useState({});
   const [selectedJob, selectJob] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
   const getJobs = async (query) => {
     setLoading(true);
-    await fetch(`https://remotive.io/api/remote-jobs?search=${query}&limit=10`)
+    await fetch(`https://remotive.io/api/remote-jobs?search=${query}`)
       .then((res) => res.json())
-      .then((data) => setJobs(data))
+      .then((data) => props.getJobs(data))
       .then(() => setLoading(false));
   };
 
@@ -29,8 +38,8 @@ const Home = () => {
       </header>
       <Row>
         <Col sm={4} style={{ border: "1px solid black" }} className="jobs">
-          {jobs.jobs?.length > 0
-            ? jobs.jobs.map((job) => (
+          {props.jobs.jobs?.length > 0
+            ? props.jobs.jobs.map((job) => (
                 <JobList
                   key={job.id}
                   job={job}
@@ -44,7 +53,7 @@ const Home = () => {
         <Col sm={8} style={{ border: "1px solid black" }}>
           <JobDescription
             selectedJob={selectedJob}
-            legal={jobs["0-legal-notice"]}
+            legal={props.jobs["0-legal-notice"]}
           />
         </Col>
       </Row>
@@ -52,4 +61,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
