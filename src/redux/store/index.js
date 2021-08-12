@@ -1,9 +1,17 @@
-import { createStore } from "redux";
-import mainReducer from "../reducers";
+import { createStore, combineReducers, compose, applyMiddleware } from "redux";
+
+import thunk from "redux-thunk";
+import cartReducer from "../reducers/fav";
+import userReducer from "../reducers/users";
+import jobsReducer from "../reducers/getjobs";
 
 export const initialState = {
   // jobs
-  jobs: [],
+  jobs: {
+    jobsArr: [],
+    jobsQuery: "",
+    isLoading: false,
+  },
   // cart
   cart: {
     jobs: [],
@@ -14,10 +22,17 @@ export const initialState = {
   },
 };
 
+const bigReducer = combineReducers({
+  cart: cartReducer,
+  user: userReducer,
+  jobs: jobsReducer,
+});
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const configureStore = createStore(
-  mainReducer,
+  bigReducer,
   initialState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeEnhancers(applyMiddleware(thunk))
 );
 // 3 arguments:
 // reducer

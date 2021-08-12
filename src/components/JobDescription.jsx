@@ -25,7 +25,7 @@ const JobDescription = ({ selectedJob, legal, addToCart }) => {
           <div dangerouslySetInnerHTML={{ __html: selectedJob.description }} />
         </>
       ) : (
-        "balls"
+        "Select a job on the left."
       )}
     </>
   );

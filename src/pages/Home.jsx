@@ -4,42 +4,57 @@ import JobDescription from "../components/JobDescription";
 import { useState } from "react";
 
 import { connect } from "react-redux";
-import { getJobsAction } from "../redux/actions";
+import {
+  getJobsAction,
+  setQueryAction,
+  setLoadingAction,
+} from "../redux/actions";
 
 const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => ({
-  getJobs: (jobs) => dispatch(getJobsAction(jobs)),
+  getJobs: (query) => dispatch(getJobsAction(query)),
+  setQuery: (query) => dispatch(setQueryAction(query)),
+  setLoading: (status) => dispatch(setLoadingAction(status)),
 });
 
 const Home = (props) => {
-  // const [jobs, setJobs] = useState({});
   const [selectedJob, selectJob] = useState(null);
-  const [isLoading, setLoading] = useState(false);
 
   const getJobs = async (query) => {
-    setLoading(true);
-    await fetch(`https://remotive.io/api/remote-jobs?search=${query}`)
-      .then((res) => res.json())
-      .then((data) => props.getJobs(data))
-      .then(() => setLoading(false));
+    props.setLoading(true);
+    props.setQuery(query);
+    props.getJobs(query);
   };
+
+  // const getJobs = async (query) => {
+  //   setLoading(true);
+  //   await fetch(`https://remotive.io/api/remote-jobs?search=${query}`)
+  //     .then((res) => res.json())
+  //     .then((data) => props.getJobs(data))
+  //     .then(() => setLoading(false));
+  // };
 
   const changeJob = (job) => {
     selectJob(job);
   };
   return (
     <>
+      {console.log(props.jobs.jobsArr.jobs)}
       <header>
         <input type="text" id="query" />
         <Button onClick={() => getJobs(document.getElementById("query").value)}>
-          {isLoading ? <Spinner animation="border" role="status" /> : "Search"}
+          {props.jobs.isLoading ? (
+            <Spinner animation="border" role="status" />
+          ) : (
+            "Search"
+          )}
         </Button>
       </header>
       <Row>
         <Col sm={4} style={{ border: "1px solid black" }} className="jobs">
-          {props.jobs.jobs?.length > 0
-            ? props.jobs.jobs.map((job) => (
+          {props.jobs.jobsArr.jobs
+            ? props.jobs.jobsArr.jobs.map((job) => (
                 <JobList
                   key={job.id}
                   job={job}
@@ -47,13 +62,13 @@ const Home = (props) => {
                   changeJob={changeJob}
                 />
               ))
-            : "Blahblahblah"}
+            : "Search something"}
         </Col>
 
         <Col sm={8} style={{ border: "1px solid black" }}>
           <JobDescription
             selectedJob={selectedJob}
-            legal={props.jobs["0-legal-notice"]}
+            legal={props.jobs.jobsArr["0-legal-notice"]}
           />
         </Col>
       </Row>
