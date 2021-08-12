@@ -40,7 +40,6 @@ const Home = (props) => {
   };
   return (
     <>
-      {console.log(props.jobs.jobsArr.jobs)}
       <header>
         <input type="text" id="query" />
         <Button onClick={() => getJobs(document.getElementById("query").value)}>
