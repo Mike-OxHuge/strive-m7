@@ -5,6 +5,9 @@ import cartReducer from "../reducers/fav";
 import userReducer from "../reducers/users";
 import jobsReducer from "../reducers/getjobs";
 
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 export const initialState = {
   // jobs
   jobs: {
@@ -22,19 +25,30 @@ export const initialState = {
   },
 };
 
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
 const bigReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   jobs: jobsReducer,
 });
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const configureStore = createStore(
-  bigReducer,
+const persistedReducer = persistReducer(persistConfig, bigReducer);
+
+const configureStore = createStore(
+  persistedReducer,
   initialState,
   composeEnhancers(applyMiddleware(thunk))
 );
+const persistor = persistStore(configureStore);
 // 3 arguments:
 // reducer
 // initialState
 // any enhancer
+
+export { configureStore, persistor };

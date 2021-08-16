@@ -2,38 +2,23 @@ import { Row, Col, Button, Spinner } from "react-bootstrap";
 import JobList from "../components/JobList";
 import JobDescription from "../components/JobDescription";
 import { useState } from "react";
-
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getJobsAction,
   setQueryAction,
   setLoadingAction,
 } from "../redux/actions";
 
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => ({
-  getJobs: (query) => dispatch(getJobsAction(query)),
-  setQuery: (query) => dispatch(setQueryAction(query)),
-  setLoading: (status) => dispatch(setLoadingAction(status)),
-});
-
 const Home = (props) => {
   const [selectedJob, selectJob] = useState(null);
+  const jobs = useSelector((state) => state.jobs);
+  const dispatch = useDispatch();
 
   const getJobs = async (query) => {
-    props.setLoading(true);
-    props.setQuery(query);
-    props.getJobs(query);
+    dispatch(setLoadingAction(true));
+    dispatch(setQueryAction(query));
+    dispatch(getJobsAction(query));
   };
-
-  // const getJobs = async (query) => {
-  //   setLoading(true);
-  //   await fetch(`https://remotive.io/api/remote-jobs?search=${query}`)
-  //     .then((res) => res.json())
-  //     .then((data) => props.getJobs(data))
-  //     .then(() => setLoading(false));
-  // };
 
   const changeJob = (job) => {
     selectJob(job);
@@ -43,7 +28,7 @@ const Home = (props) => {
       <header>
         <input type="text" id="query" />
         <Button onClick={() => getJobs(document.getElementById("query").value)}>
-          {props.jobs.isLoading ? (
+          {jobs.isLoading ? (
             <Spinner animation="border" role="status" />
           ) : (
             "Search"
@@ -52,8 +37,8 @@ const Home = (props) => {
       </header>
       <Row>
         <Col sm={4} style={{ border: "1px solid black" }} className="jobs">
-          {props.jobs.jobsArr.jobs
-            ? props.jobs.jobsArr.jobs.map((job) => (
+          {jobs.jobsArr.jobs
+            ? jobs.jobsArr.jobs.map((job) => (
                 <JobList
                   key={job.id}
                   job={job}
@@ -67,7 +52,7 @@ const Home = (props) => {
         <Col sm={8} style={{ border: "1px solid black" }}>
           <JobDescription
             selectedJob={selectedJob}
-            legal={props.jobs.jobsArr["0-legal-notice"]}
+            legal={jobs.jobsArr["0-legal-notice"]}
           />
         </Col>
       </Row>
@@ -75,4 +60,4 @@ const Home = (props) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
