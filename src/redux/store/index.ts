@@ -2,13 +2,14 @@ import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 
 import thunk from "redux-thunk";
 import cartReducer from "../reducers/fav";
-import userReducer from "../reducers/users";
 import jobsReducer from "../reducers/getjobs";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-export const initialState = {
+import { iredux } from "../../itypes";
+
+export const initialState: iredux = {
   // jobs
   jobs: {
     jobsArr: [],
@@ -32,11 +33,11 @@ const persistConfig = {
 
 const bigReducer = combineReducers({
   cart: cartReducer,
-  user: userReducer,
   jobs: jobsReducer,
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const persistedReducer = persistReducer(persistConfig, bigReducer);
 

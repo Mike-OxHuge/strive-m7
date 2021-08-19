@@ -9,8 +9,11 @@ import {
   setLoadingAction,
 } from "../redux/actions";
 
-const Home = (props) => {
-  const [selectedJob, selectJob] = useState(null);
+import { ijob, iredux } from "../itypes";
+
+const Home = () => {
+  const [selectedJob, selectJob] = useState<ijob>();
+  const [searchQuery, setSearchQuery] = useState<string | null>();
   const jobs = useSelector((state) => state.jobs);
   const dispatch = useDispatch();
 
@@ -26,8 +29,12 @@ const Home = (props) => {
   return (
     <>
       <header>
-        <input type="text" id="query" />
-        <Button onClick={() => getJobs(document.getElementById("query").value)}>
+        <input
+          type="text"
+          id="query"
+          onChange={(e) => setSearchQuery(e.target.value.toString())}
+        />
+        <Button onClick={() => getJobs(searchQuery}>
           {jobs.isLoading ? (
             <Spinner animation="border" role="status" />
           ) : (

@@ -6,10 +6,16 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@types/bootstrap": "^5.1.2",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.6.2",
     "@types/react": "^17.0.19",
+    "@types/react-bootstrap": "^0.32.26",
     "@types/react-dom": "^17.0.9",
+    "@types/react-redux": "^7.1.18",
+    "@types/redux": "^3.6.0",
+    "@types/redux-persist": "^4.3.1",
+    "@types/redux-thunk": "^2.1.0",
     "bootstrap": "^5.0.2",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
@@ -46,5 +52,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.1.8"
   }
 }
