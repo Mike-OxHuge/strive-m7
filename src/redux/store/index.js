@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 import cartReducer from "../reducers/fav";
 import userReducer from "../reducers/users";
 import jobsReducer from "../reducers/getjobs";
+import weatherReducer from "../reducers/weather";
 
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -23,6 +24,12 @@ export const initialState = {
   user: {
     firstName: "",
   },
+  weather: {
+    query: "",
+    error: "",
+    isLoading: false,
+    weather: {},
+  },
 };
 
 const persistConfig = {
@@ -34,6 +41,7 @@ const bigReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   jobs: jobsReducer,
+  weather: weatherReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

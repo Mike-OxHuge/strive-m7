@@ -43,3 +43,41 @@ export const getJobsAction = () => {
     }
   };
 };
+
+export const setWeatherQueryAction = (query) => ({
+  type: "SET_WEATHER_QUERY",
+  payload: query,
+});
+
+export const getWeather = (weather) => ({
+  type: "GET_WEATHER",
+  payload: weather,
+});
+
+export const setLoadingWeather = (state) => ({
+  type: "SET_LOADING_WEATHER",
+  payload: state,
+});
+
+export const setError = (state) => ({
+  type: "GET_WEATHER_ERROR",
+  payload: state,
+});
+
+export const getWeatherAction = () => {
+  return async (dispatch, getState) => {
+    try {
+      const query = getState().weather.query;
+      let resp = await fetch(`
+      https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=48f8b6edb12a8f2b73d312dd5282b888`);
+      if (resp.ok) {
+        let weather = await resp.json();
+        dispatch(getWeather(weather));
+        dispatch(setLoadingWeather(false));
+      }
+    } catch (error) {
+      dispatch(setError(error));
+      console.log(error);
+    }
+  };
+};
