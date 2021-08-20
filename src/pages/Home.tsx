@@ -34,7 +34,7 @@ const Home = () => {
           id="query"
           onChange={(e) => setSearchQuery(e.target.value.toString())}
         />
-        <Button onClick={() => getJobs(searchQuery}>
+        <Button onClick={() => getJobs(searchQuery)}>
           {jobs.isLoading ? (
             <Spinner animation="border" role="status" />
           ) : (
