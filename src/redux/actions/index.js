@@ -72,8 +72,8 @@ export const getWeatherAction = () => {
       https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=48f8b6edb12a8f2b73d312dd5282b888`);
       if (resp.ok) {
         let weather = await resp.json();
-        dispatch(getWeather(weather));
-        dispatch(setLoadingWeather(false));
+        await dispatch(getWeather(weather));
+        await dispatch(setLoadingWeather(false));
       }
     } catch (error) {
       dispatch(setError(error));

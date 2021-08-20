@@ -28,7 +28,7 @@ export const initialState = {
     query: "",
     error: "",
     isLoading: false,
-    weather: {},
+    weather: null,
   },
 };
 
